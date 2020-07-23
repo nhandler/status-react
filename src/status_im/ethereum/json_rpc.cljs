@@ -144,6 +144,8 @@
    "wakuext_sendTransaction" {}
    "wakuext_acceptRequestTransaction" {}
    "wakuext_signMessageWithChatKey" {}
+   "wakuext_registerForPushNotifications" {}
+   "wakuext_unregisterFromPushNotifications" {}
    "status_chats" {}
    "wallet_getTransfers" {}
    "wallet_getTokensBalances" {}
