@@ -23,7 +23,7 @@
             [quo.previews.main :as quo.preview]
             [status-im.utils.config :as config]
             [status-im.ui.screens.chat.image.preview.views :as image-preview]
-            [status-im.ui.screens.notifications-settings.views :as notifications-settings]))
+            [status-im.ui.screens.intro.notifications :as notifications]))
 
 (defonce main-stack (navigation/create-stack))
 (defonce bottom-tabs (navigation/create-bottom-tabs))
