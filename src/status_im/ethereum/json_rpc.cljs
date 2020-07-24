@@ -89,6 +89,15 @@
    "shhext_sendTransaction" {}
    "shhext_acceptRequestTransaction" {}
    "shhext_signMessageWithChatKey" {}
+   "shhext_registerForPushNotifications" {}
+   "shhext_unregisterFromPushNotifications" {}
+   "shhext_enablePushNotificationsFromContactsOnly" {}
+   "shhext_disablePushNotificationsFromContactsOnly" {}
+   "shhext_startPushNotificationsServer" {}
+   "shhext_stopPushNotificationsServer" {}
+   "shhext_disableSendingNotifications" {}
+   "shhext_enableSendingNotifications" {}
+   "shhext_addPushNotificationsServer" {}
    "wakuext_post" {}
    "wakuext_startMessenger" {}
    "wakuext_sendPairInstallation" {}
@@ -148,6 +157,11 @@
    "wakuext_unregisterFromPushNotifications" {}
    "wakuext_enablePushNotificationsFromContactsOnly" {}
    "wakuext_disablePushNotificationsFromContactsOnly" {}
+   "wakuext_startPushNotificationsServer" {}
+   "wakuext_stopPushNotificationsServer" {}
+   "wakuext_disableSendingNotifications" {}
+   "wakuext_enableSendingNotifications" {}
+   "wakuext_addPushNotificationsServer" {}
    "status_chats" {}
    "wallet_getTransfers" {}
    "wallet_getTokensBalances" {}
