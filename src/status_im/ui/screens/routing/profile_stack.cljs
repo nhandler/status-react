@@ -86,8 +86,6 @@
      :component appearance/appearance}
     {:name      :notifications
      :component notifications-settings/notifications-settings}
-    {:name      :language-settings
-     :component language-settings/language-settings}
     {:name      :sync-settings
      :component sync-settings/sync-settings}
     {:name      :advanced-settings
