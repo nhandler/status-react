@@ -47,26 +47,26 @@
                 ;                                           :content-height 150}
                 ;                                          contact])
 
-(defn render-detail [{:keys [alias public-key ens-name] :as detail}]
-  [quo/list-item
-   {:title               (or alias ens-name)
-    :subtitle            (utils/get-shortened-address public-key)
-    :icon                [chat-icon/contact-icon-contacts-tab
-                          (multiaccounts/displayed-photo detail)]
-    :accessibility-label :profile-public-key
-    :on-press            #(re-frame/dispatch [:show-popover {:view     :share-chat-key
-                                                             :address  public-key
-                                                             :ens-name ens-name}])
-    :accessory           [icons/icon :main-icons/share styles/contact-profile-detail-share-icon]}])
 
-(defn profile-details [contact]
+(defn profile-details [{:keys [alias public-key ens-name] :as contact}]
   (when contact
     [react/view
      [quo/list-header
       [quo/text {:accessibility-label :profile-details
                  :color               :inherit}
        (i18n/label :t/profile-details)]]
-     [render-detail contact]]))
+     [quo/list-item
+      {:title               (or alias ens-name)
+       :subtitle            [quo/text {:monospace true
+                                       :color     :secondary}
+                             (utils/get-shortened-address public-key)]
+       :icon                [chat-icon/contact-icon-contacts-tab
+                             (multiaccounts/displayed-photo contact)]
+       :accessibility-label :profile-public-key
+       :on-press            #(re-frame/dispatch [:show-popover {:view     :share-chat-key
+                                                                :address  public-key
+                                                                :ens-name ens-name}])
+       :accessory           [icons/icon :main-icons/share styles/contact-profile-detail-share-icon]}]]))
 
 ;; TODO: List item
 (defn block-contact-action [{:keys [blocked? public-key]}]

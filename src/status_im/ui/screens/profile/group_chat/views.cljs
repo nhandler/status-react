@@ -106,6 +106,7 @@
            :extended-header   (profile-header/extended-header
                                {:title         chat-name
                                 :color         color
+                                :monospace     false
                                 :subtitle      (i18n/label :t/members-count {:count (count contacts)})
                                 :subtitle-icon :icons/tiny-group})}
           [react/view profile.components.styles/profile-form

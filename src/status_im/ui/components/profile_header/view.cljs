@@ -36,7 +36,8 @@
          (when-not minimized
            {:padding-top    subtitle-margin})))
 
-(defn extended-header [{:keys [title photo color subtitle subtitle-icon on-press]}]
+(defn extended-header [{:keys [title photo color subtitle subtitle-icon on-press monospace]
+                        :or   {monospace true}}]
   (fn [{:keys [animation minimized]}]
     (let [wrapper (if on-press
                     [rn/touchable-opacity {:on-press on-press}]
@@ -72,6 +73,7 @@
                                                   :container-style {:margin-right 4}}])
               [quo/text {:number-of-lines 1
                          :ellipsize-mode  :middle
+                         :monospace       monospace
                          :size            (if minimized :small :base)
                          :color           :secondary}
                subtitle]])]]

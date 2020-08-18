@@ -278,7 +278,7 @@
         (i18n/label :t/processing)]])]])
 
 (defn recovery-success [pubkey name photo-path]
-  [react/view {:flex           1
+  [react/view {:flex             1
                :justify-content  :space-between
                :background-color colors/white}
    [react/view {:flex            1
@@ -305,12 +305,12 @@
                    :number-of-lines 1
                    :ellipsize-mode  :middle}
        name]
-      [react/text {:style           {:text-align  :center
-                                     :margin-top  4
-                                     :color       colors/gray
-                                     :font-family "monospace"}
-                   :number-of-lines 1
-                   :ellipsize-mode  :middle}
+      [quo/text {:style           {:margin-top 4}
+                 :monospace       true
+                 :color           :secondary
+                 :align           :center
+                 :number-of-lines 1
+                 :ellipsize-mode  :middle}
        (utils/get-shortened-address pubkey)]]]]])
 
 (defview wizard-generate-key []

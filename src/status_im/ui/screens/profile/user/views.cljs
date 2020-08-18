@@ -32,9 +32,8 @@
             {:label           :t/ens-username
              :container-style {:margin-top 12 :margin-bottom 4}
              :copied-text     ens-name}
-            [react/nested-text
-             {:style               {:line-height 22 :font-size 15
-                                    :font-family "monospace"}
+            [quo/text
+             {:monospace           true
               :accessibility-label :ens-username}
              ens-name]]
            [react/view {:height           1 :margin-top 12 :margin-horizontal -16
@@ -43,11 +42,10 @@
          {:label           :t/chat-key
           :container-style {:margin-top 12 :margin-bottom 4}
           :copied-text     address}
-         [react/text {:number-of-lines     1
-                      :ellipsize-mode      :middle
-                      :accessibility-label :chat-key
-                      :style               {:line-height 22 :font-size 15
-                                            :font-family "monospace"}}
+         [quo/text {:number-of-lines     1
+                    :ellipsize-mode      :middle
+                    :accessibility-label :chat-key
+                    :monospace           true}
           address]]]
        [react/view styles/share-link-button
         [quo/button
