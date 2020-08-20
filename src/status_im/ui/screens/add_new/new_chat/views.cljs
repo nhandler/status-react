@@ -13,7 +13,8 @@
             [status-im.ui.components.topbar :as topbar]
             [status-im.ui.screens.add-new.new-chat.styles :as styles]
             [status-im.utils.debounce :as debounce]
-            [status-im.utils.utils :as utils])
+            [status-im.utils.utils :as utils]
+            [reagent.core :as reagent])
   (:require-macros [status-im.utils.views :as views]))
 
 (defn- render-row [row _ _]
@@ -36,7 +37,7 @@
    icon])
 
 (defn- input-icon
-  [state new-contact?]
+  [state new-contact? entered-nickname]
   (let [icon (if new-contact? :main-icons/add :main-icons/arrow-right)]
     (case state
       :searching
@@ -45,7 +46,7 @@
 
       :valid
       [react/touchable-highlight
-       {:on-press #(debounce/dispatch-and-chill [:contact.ui/contact-code-submitted new-contact?] 3000)}
+       {:on-press #(debounce/dispatch-and-chill [:contact.ui/contact-code-submitted new-contact? entered-nickname] 3000)}
        [icon-wrapper colors/blue
         [vector-icons/icon icon {:color colors/white-persist}]]]
 
@@ -83,7 +84,7 @@
             (debounce/debounce-and-dispatch [:new-chat/set-new-identity %] 600))
          :on-submit-editing
          #(when (= state :valid)
-            (debounce/dispatch-and-chill [:contact.ui/contact-code-submitted false] 3000))
+            (debounce/dispatch-and-chill [:contact.ui/contact-code-submitted false nil] 3000))
          :placeholder         (i18n/label :t/enter-contact-code)
          :show-cancel         false
          :accessibility-label :enter-contact-code-input
@@ -91,7 +92,7 @@
          :return-key-type     :go}]]
       [react/view {:justify-content :center
                    :align-items     :center}
-       [input-icon state false]]]
+       [input-icon state false nil]]]
      [react/view {:min-height 30 :justify-content :flex-end}
       [react/text {:style styles/message}
        (cond (= state :error)
@@ -109,8 +110,19 @@
                       :enableEmptySections       true
                       :keyboardShouldPersistTaps :always}]]))
 
+(defn- nickname-input [entered-nickname]
+  [quo/text-input
+   {:on-change-text      #(reset! entered-nickname %)
+    :auto-capitalize     :none
+    :auto-focus          false
+    :accessibility-label :nickname-input
+    :placeholder         (i18n/label :t/add-nickname)
+    :return-key-type     :done
+    :auto-correct        false}])
+
 (views/defview new-contact []
-  (views/letsubs [{:keys [state ens-name public-key error]} [:contacts/new-identity]]
+  (views/letsubs [{:keys [state ens-name public-key error]} [:contacts/new-identity]
+                  entered-nickname (reagent/atom "")]
     [react/view {:style {:flex 1}}
      [topbar/topbar
       {:title  (i18n/label :t/new-contact)
@@ -133,7 +145,7 @@
             (debounce/debounce-and-dispatch [:new-chat/set-new-identity %] 600))
          :on-submit-editing
          #(when (= state :valid)
-            (debounce/dispatch-and-chill [:contact.ui/contact-code-submitted true] 3000))
+            (debounce/dispatch-and-chill [:contact.ui/contact-code-submitted true @entered-nickname] 3000))
          :placeholder         (i18n/label :t/enter-contact-code)
          :show-cancel         false
          :accessibility-label :enter-contact-code-input
@@ -141,7 +153,7 @@
          :return-key-type     :go}]]
       [react/view {:justify-content :center
                    :align-items     :center}
-       [input-icon state true]]]
+       [input-icon state true @entered-nickname]]]
      [react/view {:min-height 30 :justify-content :flex-end}
       [react/text {:style styles/message}
        (cond (= state :error)
@@ -149,4 +161,13 @@
              (= state :valid)
              (str (when ens-name (str ens-name " • "))
                   (utils/get-shortened-address public-key))
-             :else "")]]]))
+             :else "")]]
+     [quo/list-header
+      [quo/text {:accessibility-label :chat-settings
+                 :color               :inherit}
+       (i18n/label :t/chat-settings)]]
+     [react/view {:padding 16}
+
+      [nickname-input entered-nickname]
+      [react/text {:style {:margin-top 16 :color colors/gray}}
+       (i18n/label :t/nickname-description)]]]))
