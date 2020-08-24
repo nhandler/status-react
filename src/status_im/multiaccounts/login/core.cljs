@@ -86,7 +86,7 @@
                 {:db (update db :keycard dissoc :flow)}
                 (if (= :import flow)
                   (navigation/navigate-to-cofx :intro-stack {:screen :keycard-recovery-success})
-                  (navigation/navigate-to-cofx :notifications-settings nil))))))
+                  (navigation/navigate-to-cofx :notifications-onboarding nil))))))
 
 (fx/defn  initialize-dapp-permissions
   {:events [::initialize-dapp-permissions]}

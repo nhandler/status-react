@@ -1230,6 +1230,8 @@
     "private-notifications-descr": "Status will notify you about new messages. You can edit your notification preferences later in settings.",
     "maybe-later": "Maybe later",
     "join": "Join",
+    "registered": "registered",
+    "not-registered": "not registered",
     "audio-recorder-error": "Recorder error",
     "audio-recorder": "Recorder",
     "audio-recorder-max-ms-reached": "Maximum recording time reached",

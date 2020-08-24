@@ -3,18 +3,23 @@
             [taoensso.timbre :as log]
             [status-im.utils.fx :as fx]
             [status-im.multiaccounts.update.core :as multiaccounts.update]
-            [status-im.native-module.core :as status]
             ["@react-native-community/push-notification-ios" :default pn-ios]
+            [status-im.native-module.core :as status]
             [quo.platform :as platform]
-            [status-im.utils.fx :as fx]
             [status-im.utils.config :as config]
             [status-im.ethereum.json-rpc :as json-rpc]
-            [status-im.waku.core :as waku]
-            [status-im.utils.utils :as utils]))
+            [status-im.waku.core :as waku]))
+
+(def server-type-default 1)
+(def server-type-custom 2)
 
 (def apn-token-type 1)
 (def firebase-token-type 2)
 (def listeners-added? (atom nil))
+(defn server<-rpc [{:keys [type publicKey registered]}]
+  {:public-key publicKey
+   :type type
+   :registered registered})
 
 (defn add-event-listeners []
   (when-not @listeners-added?
@@ -147,12 +152,32 @@
 
               (multiaccounts.update/optimistic :send-push-notifications? (boolean enabled?)))))
 
+(fx/defn handle-add-server-error
+  {:events [::push-notifications-add-server-error]}
+  [_ public-key error]
+  (log/error "failed to add server", public-key, error))
+
 (fx/defn add-server
   {:events [::add-server]}
   [{:keys [db] :as cofx} public-key]
   (fx/merge cofx
             {::json-rpc/call [{:method     (json-rpc/call-ext-method (waku/enabled? cofx) "addPushNotificationsServer")
                                :params     [public-key]
-                               :on-success #(log/info "[push-notifications] switch-send-notifications successful" %)
-                               :on-error   #(re-frame/dispatch [::push-notifications-send-update-error public-key %])}]}))
+                               :on-success #(do
+                                              (log/info "[push-notifications] switch-send-notifications successful" %)
+                                              (re-frame/dispatch [::fetch-servers]))
+                               :on-error   #(re-frame/dispatch [::push-notifications-add-server-error public-key %])}]}))
 
+(fx/defn handle-servers-fetched
+  {:events [::servers-fetched]}
+  [{:keys [db]} servers]
+  {:db (assoc db :push-notifications/servers (map server<-rpc servers))})
+
+(fx/defn fetch-push-notifications-servers
+  {:events [::fetch-servers]}
+  [cofx]
+  {::json-rpc/call [{:method     (json-rpc/call-ext-method (waku/enabled? cofx) "getPushNotificationsServers")
+                     :params     []
+                     :on-success #(do
+                                    (log/info "[push-notifications] servers fetched" %)
+                                    (re-frame/dispatch [::servers-fetched %]))}]})

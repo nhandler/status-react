@@ -98,6 +98,7 @@
    "shhext_disableSendingNotifications" {}
    "shhext_enableSendingNotifications" {}
    "shhext_addPushNotificationsServer" {}
+   "shhext_getPushNotificationsServers" {}
    "wakuext_post" {}
    "wakuext_startMessenger" {}
    "wakuext_sendPairInstallation" {}
@@ -162,6 +163,7 @@
    "wakuext_disableSendingNotifications" {}
    "wakuext_enableSendingNotifications" {}
    "wakuext_addPushNotificationsServer" {}
+   "wakuext_getPushNotificationsServers" {}
    "status_chats" {}
    "wallet_getTransfers" {}
    "wallet_getTokensBalances" {}
