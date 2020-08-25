@@ -113,13 +113,14 @@
      [react/scroll-view {:style                   {:flex 1}
                          :content-container-style {:padding-vertical 8}}
       (map server-view servers)
-      [react/view {:style {:padding-horizontal 20}}
-       [quo/text-input
-        {:label          (i18n/label :t/server)
-         :placeholder    (i18n/label :t/specify-server-public-key)
-         :value          @server
-         :on-change-text #(reset! server %)
-         :auto-focus     true}]
+      [react/keyboard-avoiding-view {}
+       [react/view {:style {:padding-horizontal 20}}
+        [quo/text-input
+         {:label          (i18n/label :t/server)
+          :placeholder    (i18n/label :t/specify-server-public-key)
+          :value          @server
+          :on-change-text #(reset! server %)
+          :auto-focus     true}]]
        [quo/button {:type     :secondary
                     :after    :main-icon/next
                     :disabled (empty? @server)
