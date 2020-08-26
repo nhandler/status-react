@@ -2,6 +2,7 @@
   (:require [quo.core :as quo]
             [re-frame.core :as re-frame]
             [status-im.i18n :as i18n]
+            [status-im.chat.models :as chat.models]
             [status-im.multiaccounts.core :as multiaccounts]
             [status-im.ui.components.chat-icon.screen :as chat-icon]
             [status-im.ui.components.icons.vector-icons :as icons]
@@ -59,6 +60,15 @@
                                                              :ens-name ens-name}])
     :accessory           [icons/icon :main-icons/share styles/contact-profile-detail-share-icon]}])
 
+(defn render-chat-settings [{:keys [public-key]}]
+  (let [muted? (:muted @(re-frame/subscribe [:chats/chat public-key]))]
+    [quo/list-item
+     {:title               (i18n/label :mute-chat)
+      :active               muted?
+      :accessibility-label :mute-chat
+      :on-press            #(re-frame/dispatch [::chat.models/mute-chat-toggled public-key (not muted?)])
+      :accessory           :switch}]))
+
 (defn profile-details [contact]
   (when contact
     [react/view
@@ -67,6 +77,15 @@
                  :color               :inherit}
        (i18n/label :t/profile-details)]]
      [render-detail contact]]))
+
+(defn chat-settings [contact]
+  (when contact
+    [react/view
+     [quo/list-header
+      [quo/text {:accessibility-label :chat-settings
+                 :color               :inherit}
+       (i18n/label :t/chat-settings)]]
+     [render-chat-settings contact]]))
 
 ;; TODO: List item
 (defn block-contact-action [{:keys [blocked? public-key]}]
@@ -126,4 +145,6 @@
            [profile-details (cond-> contact
                               (and ens-verified name)
                               (assoc :ens-name name))]]
+          [react/view {}
+           [chat-settings contact]]
           [block-contact-action contact]]]))))
