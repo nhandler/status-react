@@ -486,10 +486,10 @@ RCT_EXPORT_METHOD(saveAccountAndLoginWithKeycard:(NSString *)multiaccountData
     NSArray *keys = [fileManager contentsOfDirectoryAtPath:multiaccountKeystoreDir.path error:nil];
     if (keys.count == 0) {
         NSString *migrationResult = toObjCStr(migrateKeyStoreDir(fromObjCStr(accountData), fromObjCStr(password), 
-                  fromObjCStr(oldKeystoreDir.path), fromObjCStr(multiaccountKeystoreDir.path));
+                  fromObjCStr(oldKeystoreDir.path), fromObjCStr(multiaccountKeystoreDir.path)));
         NSLog(@"keystore migration result %@", migrationResult);
         
-        NSString *initKeystoreResult = toObjCStr(initKeystore(toObjCStr(multiaccountKeystoreDir.path)));
+        NSString *initKeystoreResult = toObjCStr(initKeystore(fromObjCStr(multiaccountKeystoreDir.path)));
         NSLog(@"InitKeyStore result %@", initKeystoreResult);
     }
 }

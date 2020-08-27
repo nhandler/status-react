@@ -62,4 +62,8 @@ public class NimStatus {
   public native String multiAccountLoadAccount(String paramsJSON);
   public native String multiAccountGenerate(String paramsJSON);
   public native String multiAccountReset();
+  public native String deleteMultiaccount(String keyUID, String path);
+  public native String migrateKeyStoreDir(String accountData, String password, String oldKeystoreDir, String multiaccountKeystoreDir);
+  public native void startWallet();
+  public native void stopWallet();
 }

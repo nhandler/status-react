@@ -526,4 +526,50 @@ jstring Java_im_status_NimStatus_multiAccountGenerate(JNIEnv* env, jobject thiz,
 
   return (*env)->NewStringUTF(env, result);
 }
-jstring Java_im_status_NimStatus_multiAccountReset(JNIEnv* env, jobject thiz);
+
+jstring Java_im_status_NimStatus_deleteMultiaccount(JNIEnv* env, jobject thiz, 
+                                                    jstring jkeyUID,
+                                                    jstring jpath) {
+  const char * keyUID = (*env)->GetStringUTFChars(env, jkeyUID, 0);
+  const char * path = (*env)->GetStringUTFChars(env, jpath, 0);
+  const char * result = deleteMultiaccount(keyUID, path);
+
+  (*env)->ReleaseStringUTFChars(env, jkeyUID, keyUID);
+  (*env)->ReleaseStringUTFChars(env, jpath, path);
+
+  return (*env)->NewStringUTF(env, result);
+}
+
+jstring Java_im_status_NimStatus_migrateKeyStoreDir(JNIEnv* env, jobject thiz, 
+                                                    jstring jaccountData, 
+                                                    jstring jpassword, 
+                                                    jstring joldKeystoreDir,
+                                                    jstring jmultiaccountKeystoreDir) {
+  const char * accountData = (*env)->GetStringUTFChars(env, jaccountData, 0);
+  const char * password = (*env)->GetStringUTFChars(env, jpassword, 0);
+  const char * oldKeystoreDir = (*env)->GetStringUTFChars(env, joldKeystoreDir, 0);
+  const char * multiaccountKeystoreDir = (*env)->GetStringUTFChars(env, jmultiaccountKeystoreDir, 0);
+
+  const char * result = migrateKeyStoreDir(accountData, password, oldKeystoreDir, multiaccountKeystoreDir);
+
+  (*env)->ReleaseStringUTFChars(env, jaccountData, accountData);
+  (*env)->ReleaseStringUTFChars(env, jpassword, password);
+  (*env)->ReleaseStringUTFChars(env, joldKeystoreDir, oldKeystoreDir);
+  (*env)->ReleaseStringUTFChars(env, jmultiaccountKeystoreDir, multiaccountKeystoreDir);
+
+  return (*env)->NewStringUTF(env, result);
+}
+
+jstring Java_im_status_NimStatus_multiAccountReset(JNIEnv* env, jobject thiz) {
+  const char * result = multiAccountReset();
+
+  return (*env)->NewStringUTF(env, result);
+}
+
+void Java_im_status_NimStatus_startWallet(JNIEnv* env, jobject thiz) {
+  startWallet();
+}
+
+void Java_im_status_NimStatus_stopWallet(JNIEnv* env, jobject thiz) {
+  stopWallet();
+}
